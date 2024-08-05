@@ -34,9 +34,23 @@ public class ShopService {
             logger.error("Error while creating shop", shop.getName());
             return false;
         }
+        if (shop.getImagePath().isEmpty()) {
+            shop.setImagePath("/img/default.png");
+        }
         shopRepo.save(shop);
         logger.info("Successfully created shop {}", shop.getName());
         return true;
+    }
+
+    public boolean updateImagePath(Long id, String imagePath) {
+        if (shopRepo.findById(id).isPresent()) {
+            Shop shop = shopRepo.findById(id).get();
+            shop.setImagePath(imagePath);
+            shopRepo.save(shop);
+            logger.info("Successfully updated image path {}", imagePath);
+            return true;
+        }
+        return false;
     }
 
     public Shop updateShop(Shop shop) {

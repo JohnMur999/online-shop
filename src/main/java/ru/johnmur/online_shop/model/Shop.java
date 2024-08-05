@@ -16,4 +16,7 @@ public class Shop {
 
     @Column
     private String description;
+
+    @Column(name = "image_path")
+    private String imagePath;
 }

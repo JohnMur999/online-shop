@@ -2,6 +2,7 @@ package ru.johnmur.online_shop.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 
@@ -23,4 +24,14 @@ public class User {
 
     @Column(nullable = false)
     private BigDecimal balance;
+
+    @Column(nullable = false)
+    private String role;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.role == null) {
+            this.role = "customer";
+        }
+    }
 }
