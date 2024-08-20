@@ -32,26 +32,15 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
+        <th>Username</th>
+        <th>Balance</th>
     </tr>
     </thead>
     <tbody>
-    <!-- Example users, replace with dynamic content as needed -->
-    <tr>
-        <td>1</td>
-        <td>John Doe</td>
-        <td>john.doe@example.com</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Jane Smith</td>
-        <td>jane.smith@example.com</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>Michael Brown</td>
-        <td>michael.brown@example.com</td>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.balance}"></td>
     </tr>
     </tbody>
 </table>

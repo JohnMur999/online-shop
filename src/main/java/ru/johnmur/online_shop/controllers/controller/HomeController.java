@@ -22,4 +22,5 @@ public class HomeController {
         model.addAttribute("shops", shopService.findAllShops());
         return "home";
     }
+
 }

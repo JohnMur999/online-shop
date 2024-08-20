@@ -36,26 +36,47 @@
         .card-text {
             font-weight: 400;
         }
+        .navbar-custom {
+            justify-content: flex-end;
+        }
+        .account-button {
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- Навигационная панель -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-custom">
+        <a href="/account" class="btn btn-primary account-button">Личный кабинет</a>
+    </nav>
+
+    <!-- Логотип -->
     <div class="logo-container">
         <img src="/main_shop_logo.png" alt="Shop Logo" class="logo-image">
     </div>
-    <h1 class="my-4">Our Shops</h1>
-    <div class="row">
-        <div class="col-md-4" th:each="shop : ${shops}">
-            <div class="card shop-card">
-                <img th:src="@{${shop.imagePath}}" class="card-img-top shop-image" alt="Shop Image">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${shop.name}">Shop Name</h5>
-                    <p class="card-text" th:text="${shop.description}">Shop Description</p>
+
+    <!-- Заголовок -->
+    <h1 class="my-4">Магазины</h1>
+
+    <!-- Карточки магазинов -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" th:each="shop : ${shops}">
+                <div class="card shop-card">
+                    <a th:href="@{/shop/{name}(name=${shop.name})}">
+                        <img th:src="@{${shop.imagePath}}" class="card-img-top shop-image" alt="Shop Image">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${shop.name}">Shop Name</h5>
+                            <p class="card-text" th:text="${shop.description}">Shop Description</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+<!-- Скрипты -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -26,6 +26,7 @@ public class LoginController {
         return "register";
     }
 
+
     @PostMapping("/register")
     public String registerSubmit(@RequestParam String username, @RequestParam String password,
                                  @RequestParam String confirmPassword, Model model) {

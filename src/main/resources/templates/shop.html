@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${shop.name}">Shop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Oswald', sans-serif;
+        }
+        .shop-card {
+            margin-bottom: 20px;
+        }
+        .shop-image {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+        }
+        .shop-details {
+            margin-top: 20px;
+        }
+        h1 {
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Логотип -->
+    <div class="logo-container text-center">
+        <img src="/main_shop_logo.png" alt="Shop Logo" class="logo-image">
+    </div>
+
+    <!-- Информация о магазине -->
+    <div class="shop-details">
+        <h1 th:text="${shop.name}">Shop Name</h1>
+        <img th:src="@{${shop.imagePath}}" alt="Shop Image" class="shop-image">
+        <p th:text="${shop.description}" class="shop-description">Shop Description</p>
+        <!-- Здесь можно добавить другую информацию о магазине -->
+    </div>
+
+    <!-- Кнопка возврата на главную -->
+    <div class="back-home text-center">
+        <a href="/home" class="btn btn-primary">Вернуться на главную</a>
+    </div>
+</div>
+
+<!-- Скрипты -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

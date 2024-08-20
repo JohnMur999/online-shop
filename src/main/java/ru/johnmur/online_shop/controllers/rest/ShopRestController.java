@@ -16,14 +16,14 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shop")
-public class ShopController {
-    private static final Logger logger = LoggerFactory.getLogger(ShopController.class);
+@RequestMapping("/shops")
+public class ShopRestController {
+    private static final Logger logger = LoggerFactory.getLogger(ShopRestController.class);
 
     private final ShopService shopService;
 
     @Autowired
-    public ShopController(ShopService shopService) {
+    public ShopRestController(ShopService shopService) {
         this.shopService = shopService;
     }
 

@@ -7,12 +7,12 @@ import ru.johnmur.online_shop.model.User;
 
 import java.util.List;
 
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
-public class UsersController {
+public class UserRestController {
     private final UserService userService;
 
-    public UsersController(UserService userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 

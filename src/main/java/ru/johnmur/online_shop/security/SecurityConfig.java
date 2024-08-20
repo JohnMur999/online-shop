@@ -30,6 +30,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Отключает защиту CSRF
                 .authorizeHttpRequests(authorize -> authorize // Начало конфигурации авторизации запросов
                         .requestMatchers("/register", "/login").permitAll() // Разрешает доступ к указанным URL-адресам без аутентификации
+                        .requestMatchers("/users").hasRole("admin")
+                        .requestMatchers("/account").authenticated()
+                        .requestMatchers("/shop").authenticated()
                         .anyRequest().authenticated() // Требует аутентификации для всех остальных запросов
                 )
                 .formLogin(formLogin -> formLogin // Настройка формы логина

@@ -3,8 +3,9 @@ package ru.johnmur.online_shop.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.johnmur.online_shop.controllers.rest.ShopController;
+import ru.johnmur.online_shop.controllers.rest.ShopRestController;
 import ru.johnmur.online_shop.model.Shop;
 import ru.johnmur.online_shop.repos.ShopRepo;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class ShopService {
-    private static final Logger logger = LoggerFactory.getLogger(ShopController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShopRestController.class);
     private final ShopRepo shopRepo;
 
     @Autowired
@@ -30,7 +31,7 @@ public class ShopService {
     }
 
     public boolean createShop(Shop shop) {
-        if (shopRepo.findByName(shop.getName()) != null) {
+        if (shopRepo.findByName(shop.getName()).isPresent()) {
             logger.error("Error while creating shop", shop.getName());
             return false;
         }
@@ -42,15 +43,20 @@ public class ShopService {
         return true;
     }
 
-    public boolean updateImagePath(Long id, String imagePath) {
+    public Optional<Shop> getShopByName(String name) {
+        return shopRepo.findByName(name);
+    }
+
+
+    public ResponseEntity<Boolean> updateImagePath(Long id, String imagePath) {
         if (shopRepo.findById(id).isPresent()) {
             Shop shop = shopRepo.findById(id).get();
             shop.setImagePath(imagePath);
             shopRepo.save(shop);
             logger.info("Successfully updated image path {}", imagePath);
-            return true;
+            return ResponseEntity.ok(true);
         }
-        return false;
+        return ResponseEntity.notFound().build();
     }
 
     public Shop updateShop(Shop shop) {

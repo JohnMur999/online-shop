@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideDown 0.5s ease-in-out;
+        }
+
+        .user-info {
+            margin: 20px 0;
+        }
+
+        .user-info .row {
+            margin-bottom: 15px;
+        }
+
+        .user-info label {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .user-info .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            text-align: right;
+        }
+
+        .btn-recharge {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1em;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-recharge:hover {
+            background-color: #45a049;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 30px;
+            animation: fadeInUp 0.8s ease-in-out;
+        }
+
+        .back-home a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-home a:hover {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        /* Уведомления внутри popup */
+        #popup-notification {
+            display: none;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #popup-notification.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        #popup-notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Стили для popup */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            animation: slideUp 0.3s ease-in-out;
+        }
+
+        .popup-content input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s ease;
+        }
+
+        .popup-content input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .popup-content button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .popup-content button:hover {
+            background-color: #45a049;
+        }
+
+        .close-popup {
+            margin-top: 10px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-popup:hover {
+            color: #333;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Личный кабинет</h1>
+
+    <div class="user-info">
+        <div class="row">
+            <div class="col-6">
+                <label>Имя пользователя:</label>
+            </div>
+            <div class="col-6 value">
+                <span th:text="${user.username}"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>Роль:</label>
+            </div>
+            <div class="col-6 value">
+                <span th:text="${user.role}"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>Баланс:</label>
+            </div>
+            <div class="col-6 value">
+                <span id="balance-display" th:text="${user.balance}"></span>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-recharge" onclick="openPopup()">Пополнить</button>
+
+    <div class="back-home">
+        <a href="/home">Вернуться на главную</a>
+    </div>
+</div>
+
+<!-- Popup окно -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2>Пополнить баланс</h2>
+        <form id="recharge-form">
+            <input type="hidden" name="id" th:value="${user.id}">
+            <input type="number" name="amount" placeholder="Введите сумму" required>
+            <button type="button" onclick="submitForm()">Пополнить баланс</button>
+        </form>
+        <div id="popup-notification"></div> <!-- Уведомление об ошибке или успехе -->
+        <div class="close-popup" onclick="closePopup()">Отмена</div>
+    </div>
+</div>
+
+<script>
+    function submitForm() {
+        const form = document.getElementById('recharge-form');
+        const formData = new FormData(form);
+
+        const data = {
+            id: formData.get('id'),
+            amount: formData.get('amount')
+        };
+
+        fetch('/balance/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при пополнении баланса');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+
+                const balanceElement = document.getElementById('balance-display');
+                const newBalance = data.balance || data.newBalance; // или другое имя поля
+
+                if (balanceElement && newBalance !== undefined) {
+                    balanceElement.innerText = parseFloat(newBalance).toFixed(2);
+                } else {
+                    console.error('Balance not found in response:', data);
+                }
+                showPopupNotification('Баланс успешно пополнен!', 'success');
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showPopupNotification('Не удалось пополнить баланс. Попробуйте снова.', 'error');
+            });
+
+    }
+
+    function showPopupNotification(message, type) {
+        const notificationElement = document.getElementById('popup-notification');
+        notificationElement.innerText = message;
+        notificationElement.className = type;  // Используем классы для стилизации
+        notificationElement.style.display = 'block';
+
+        // Убираем уведомление через 3 секунды
+        setTimeout(() => {
+            notificationElement.style.display = 'none';
+        }, 3000);
+    }
+
+    function openPopup() {
+        document.getElementById('popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

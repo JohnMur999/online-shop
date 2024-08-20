@@ -1,7 +1,6 @@
 package ru.johnmur.online_shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.johnmur.online_shop.repos.UserRepo;
@@ -26,8 +25,20 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public List<User> findAllSortedByUsername() {
+        return userRepo.findAllByOrderByUsernameAsc();
+    }
+
     public Optional<User> findById(Long id) {
         return userRepo.findById(id);
+    }
+
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
+
+    public void save(User user) {
+        userRepo.save(user);
     }
 
     public boolean registerUser(String username, String password) {
