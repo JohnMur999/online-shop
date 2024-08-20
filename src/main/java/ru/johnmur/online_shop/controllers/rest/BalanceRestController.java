@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.johnmur.online_shop.DTO.BalanceUpdateRequest;
 import ru.johnmur.online_shop.DTO.UserBalanceResponse;
+import ru.johnmur.online_shop.controllers.rest.ControllersVersions.BaseV1Controller;
 import ru.johnmur.online_shop.model.User;
 import ru.johnmur.online_shop.service.UserService;
 
@@ -12,10 +13,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/balance")
-public class BalanceController {
+public class BalanceRestController extends BaseV1Controller {
     private final UserService userService;
 
-    public BalanceController(UserService userService) {
+    public BalanceRestController(UserService userService) {
         this.userService = userService;
     }
 
