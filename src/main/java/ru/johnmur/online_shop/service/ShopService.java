@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.johnmur.online_shop.controllers.rest.ShopRestController;
+import ru.johnmur.online_shop.controllers.rest.v1.ShopRestController;
 import ru.johnmur.online_shop.model.Shop;
 import ru.johnmur.online_shop.repos.ShopRepo;
 

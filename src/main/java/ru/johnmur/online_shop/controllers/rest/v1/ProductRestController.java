@@ -1,4 +1,4 @@
-package ru.johnmur.online_shop.controllers.rest;
+package ru.johnmur.online_shop.controllers.rest.v1;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

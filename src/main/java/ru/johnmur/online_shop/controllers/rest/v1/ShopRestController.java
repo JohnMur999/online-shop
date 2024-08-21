@@ -1,4 +1,4 @@
-package ru.johnmur.online_shop.controllers.rest;
+package ru.johnmur.online_shop.controllers.rest.v1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.johnmur.online_shop.controllers.rest.ControllersVersions.BaseV1Controller;
 import ru.johnmur.online_shop.model.Shop;
-import ru.johnmur.online_shop.service.ProductService;
 import ru.johnmur.online_shop.service.ShopService;
 
 import java.io.IOException;
@@ -19,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shops")
-public class ShopRestController extends BaseV1Controller {
+public class ShopRestController {
     private static final Logger logger = LoggerFactory.getLogger(ShopRestController.class);
 
     private final ShopService shopService;

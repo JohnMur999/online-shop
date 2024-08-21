@@ -1,10 +1,9 @@
-package ru.johnmur.online_shop.controllers.rest;
+package ru.johnmur.online_shop.controllers.rest.v1;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.johnmur.online_shop.DTO.BalanceUpdateRequest;
 import ru.johnmur.online_shop.DTO.UserBalanceResponse;
-import ru.johnmur.online_shop.controllers.rest.ControllersVersions.BaseV1Controller;
 import ru.johnmur.online_shop.model.User;
 import ru.johnmur.online_shop.service.UserService;
 
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/balance")
-public class BalanceRestController extends BaseV1Controller {
+public class BalanceRestController {
     private final UserService userService;
 
     public BalanceRestController(UserService userService) {
@@ -24,7 +23,8 @@ public class BalanceRestController extends BaseV1Controller {
     public ResponseEntity<BigDecimal> getUserBalance(@PathVariable Long id) {
         Optional<User> optionalUser = userService.findById(id);
         if (optionalUser.isPresent()) {
-            return ResponseEntity.ok(optionalUser.get().getBalance());
+            User user = optionalUser.get();
+            return ResponseEntity.ok(user.getBalance());
         } else {
             return ResponseEntity.notFound().build();
         }

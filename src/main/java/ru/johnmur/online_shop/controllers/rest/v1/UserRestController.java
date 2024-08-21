@@ -1,8 +1,7 @@
-package ru.johnmur.online_shop.controllers.rest;
+package ru.johnmur.online_shop.controllers.rest.v1;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.johnmur.online_shop.controllers.rest.ControllersVersions.BaseV1Controller;
 import ru.johnmur.online_shop.service.UserService;
 import ru.johnmur.online_shop.model.User;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 @RequestMapping("/users")
 @RestController
-public class UserRestController extends BaseV1Controller {
+public class UserRestController{
     private final UserService userService;
 
     public UserRestController(UserService userService) {
