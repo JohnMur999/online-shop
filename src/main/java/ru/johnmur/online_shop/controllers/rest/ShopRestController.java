@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.johnmur.online_shop.controllers.rest.ControllersVersions.BaseV1Controller;
-import ru.johnmur.online_shop.model.Product;
 import ru.johnmur.online_shop.model.Shop;
 import ru.johnmur.online_shop.service.ProductService;
 import ru.johnmur.online_shop.service.ShopService;
@@ -24,12 +23,10 @@ public class ShopRestController extends BaseV1Controller {
     private static final Logger logger = LoggerFactory.getLogger(ShopRestController.class);
 
     private final ShopService shopService;
-    private final ProductService productService;
 
     @Autowired
-    public ShopRestController(ShopService shopService, ProductService productService) {
+    public ShopRestController(ShopService shopService) {
         this.shopService = shopService;
-        this.productService = productService;
     }
 
     @GetMapping("/all")

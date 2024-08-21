@@ -2,8 +2,6 @@ package ru.johnmur.online_shop.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Data
