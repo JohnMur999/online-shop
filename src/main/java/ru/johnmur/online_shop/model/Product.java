@@ -25,6 +25,8 @@ public class Product {
     @Column(nullable = false)
     private Integer quantity;
 
+    private String imgPath;
+
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;

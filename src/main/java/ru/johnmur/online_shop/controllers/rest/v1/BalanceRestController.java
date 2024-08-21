@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.johnmur.online_shop.DTO.BalanceUpdateRequest;
 import ru.johnmur.online_shop.DTO.UserBalanceResponse;
+import ru.johnmur.online_shop.controllers.rest.versionconfigs.WebRestConfigV1;
 import ru.johnmur.online_shop.model.User;
 import ru.johnmur.online_shop.service.UserService;
 
@@ -30,18 +31,23 @@ public class BalanceRestController {
         }
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<UserBalanceResponse> upUserBalance(@RequestBody BalanceUpdateRequest request) {
-        Optional<User> optionalUser = userService.findById(request.getId());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setBalance(user.getBalance().add(request.getAmount()));
-            userService.save(user);
-            UserBalanceResponse response = new UserBalanceResponse(user.getId(), user.getBalance());
-            return ResponseEntity.ok(response);
-        } else {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserBalanceResponse> updateUserBalance(@PathVariable Long id, @RequestBody BalanceUpdateRequest request) {
+        Optional<User> optionalUser = userService.findById(id);
+
+        if (optionalUser.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-    }
 
+        User user = optionalUser.get();
+        BigDecimal amount = request.getAmount();
+
+        if (amount == null) {
+            return ResponseEntity.badRequest().body(new UserBalanceResponse(user.getId(),user.getBalance()));
+        }
+
+        BigDecimal newBalance = userService.updateUserBalance(user,amount);
+
+        return ResponseEntity.ok(new UserBalanceResponse(user.getId(), newBalance));
+    }
 }

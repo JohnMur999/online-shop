@@ -41,6 +41,13 @@ public class UserService {
         userRepo.save(user);
     }
 
+    public BigDecimal updateUserBalance(User user, BigDecimal amount) {
+        BigDecimal newBalance = user.getBalance().add(amount);
+        user.setBalance(newBalance);
+        userRepo.save(user);
+        return user.getBalance();
+    }
+
     public boolean registerUser(String username, String password) {
         if(userRepo.findByUsername(username) != null) {
             return false;

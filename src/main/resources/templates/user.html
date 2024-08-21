@@ -4,36 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             background-color: #f5f5f5;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #4CAF50;
             color: white;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+        }
+
+        .btn-edit {
+            background-color: #ff9800;
+        }
     </style>
 </head>
 <body>
-<h1>Users</h1>
+<h1>Все пользователи сервиса</h1>
 <table>
     <thead>
     <tr>
         <th>ID</th>
         <th>Username</th>
         <th>Balance</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -41,8 +72,153 @@
         <td th:text="${user.id}"></td>
         <td th:text="${user.username}"></td>
         <td th:text="${user.balance}"></td>
+        <td>
+            <div class="action-buttons">
+                <button class="btn btn-edit" data-toggle="modal" th:data-target="'#editBalanceModal' + ${user.id}">
+                    Изменить баланс
+                </button>
+                <button class="btn btn-delete" data-toggle="modal" th:data-target="'#deleteUserModal' + ${user.id}" th:data-user-id="${user.id}">
+                    Удалить
+                </button>
+            </div>
+        </td>
     </tr>
     </tbody>
 </table>
+
+<!-- Модальные окна для каждого пользователя -->
+<tr th:each="user : ${users}">
+    <!-- Модальное окно изменения баланса -->
+    <div th:id="'editBalanceModal' + ${user.id}" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Изменить баланс</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Введите сумму изменения +/- баланса пользателя: <strong th:text="${user.username}"></strong>:</p>
+                    <input type="number" th:id="'newBalance' + ${user.id}" class="form-control"
+                           placeholder="Введите новую сумму">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" th:data-user-id="${user.id}" onclick="updateBalance(this)">
+                        Сохранить изменения
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div th:id="'deleteUserModal' + ${user.id}" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердите удаление</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите удалить пользователя <strong th:text="${user.username}"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-danger" th:data-user-id="${user.id}" onclick="deleteUser(this)">
+                        Удалить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</tr>
+
+<!-- Модальное окно для уведомлений -->
+<div id="notificationModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Уведомление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="notificationMessage"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Ваши кастомные скрипты -->
+<script th:inline="javascript">
+    let apiVersion = /*[[${apiVersion}]]*/ 'v2';  // Подставляется версия API
+</script>
+<script>
+    function updateBalance(button) {
+        const userId = button.getAttribute('data-user-id');
+        const newBalance = document.getElementById('newBalance' + userId).value;
+
+        // Проверка на пустое значение или некорректный формат
+        if (!newBalance || isNaN(newBalance)) {
+            showNotification('Некорректное значение баланса');
+            return;
+        }
+
+        fetch(`/${apiVersion}/balance/update/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount: newBalance }), // Убедитесь, что ключ соответствует ожидаемому сервером
+        })
+            .then(response => {
+                if (response.ok) {
+                    showNotification('Баланс успешно обновлен');
+                    location.reload();
+                } else {
+                    showNotification('Ошибка при обновлении баланса');
+                }
+            })
+            .catch(error => {
+                showNotification('Произошла ошибка при выполнении запроса');
+            });
+    }
+
+    function deleteUser(button) {
+        const userId = button.getAttribute('data-user-id');
+        fetch(`/${apiVersion}/users/delete/${userId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    showNotification('Пользователь успешно удален');
+                    location.reload();
+                } else {
+                    showNotification('Ошибка при удалении пользователя');
+                }
+            });
+    }
+
+    function showNotification(message) {
+        // Установим текст сообщения в модальное окно
+        document.getElementById('notificationMessage').textContent = message;
+        // Отобразим модальное окно
+        $('#notificationModal').modal('show');
+        // Скрыть модальное окно через 3 секунды
+        setTimeout(function() {
+            $('#notificationModal').modal('hide');
+        }, 3000);
+    }
+</script>
 </body>
 </html>

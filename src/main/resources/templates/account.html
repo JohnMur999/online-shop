@@ -272,6 +272,10 @@
     </div>
 </div>
 
+<script th:inline="javascript">
+    let apiVersion = /*[[${apiVersion}]]*/ 'v2';  // Подставляется версия API
+</script>
+
 <script>
     function submitForm() {
         const form = document.getElementById('recharge-form');
@@ -282,7 +286,7 @@
             amount: formData.get('amount')
         };
 
-        fetch('/balance/update', {
+        fetch(`/${apiVersion}/balance/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

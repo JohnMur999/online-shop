@@ -26,6 +26,4 @@ public class AdminController {
         model.addAttribute("users", userService.findAllSortedByUsername());
         return "user";
     }
-
-
 }

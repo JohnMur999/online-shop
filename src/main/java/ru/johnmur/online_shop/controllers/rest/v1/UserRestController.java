@@ -33,9 +33,12 @@ public class UserRestController{
         return userService.createUser(user);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        if(userService.findById(id).isPresent()) {
+           ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.ok().build();
     }
 }
