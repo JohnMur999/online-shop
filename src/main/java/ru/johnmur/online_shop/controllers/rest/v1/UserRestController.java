@@ -33,7 +33,7 @@ public class UserRestController{
         return userService.createUser(user);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         if(userService.findById(id).isPresent()) {
